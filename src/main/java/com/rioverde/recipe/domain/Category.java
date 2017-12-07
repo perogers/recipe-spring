@@ -1,6 +1,7 @@
 package com.rioverde.recipe.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,7 +14,7 @@ public class Category {
     String description;
 
     @ManyToMany(mappedBy = "categories")
-    Set<Recipe> recipes;
+    Set<Recipe> recipes = new HashSet<>();
 
     public long getId() {
         return id;

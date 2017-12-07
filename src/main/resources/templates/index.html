@@ -1,10 +1,39 @@
 <!DOCTYPE html >
-<html lang="en" xmlns:th="http://www.thymleaf.com">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Welcome to Recipe Application</title>
+    <title>All Recipes</title>
 </head>
 <body>
-<h2>Hello World</h2>
+<h2>Recipes</h2>
+<table border="1">
+    <tr>
+        <th>Prep Time</th>
+        <th>Cook Time</th>
+        <th>Servings</th>
+        <th>Description</th>
+        <th>Source</th>
+        <th>Ingredients</th>
+
+    </tr>
+    <tr th:each="recipe : ${recipes}">
+        <td th:text="${recipe.prepTime}">10 minutes</td>
+        <td th:text="${recipe.cookTime}">40 minutes</td>
+        <td th:text="${recipe.servings}">5</td>
+        <td th:text="${recipe.description}">This is a recipe</td>
+        <td><a th:href="${recipe.url}" th:text="${recipe.source}"></a></td>
+        <td>
+            <table>
+
+                <tr th:each="ingredient : ${recipe.ingredients}">
+                    <td th:text="${ingredient.getAmount()}">amt</td>
+                    <td th:text="${ingredient.unitOfMeasure.description}">UoM</td>
+                    <td th:text="${ingredient.description}">ingredient</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>
