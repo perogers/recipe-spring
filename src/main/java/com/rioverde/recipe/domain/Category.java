@@ -1,9 +1,14 @@
 package com.rioverde.recipe.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
+@EqualsAndHashCode(exclude = {"recipes"})
 @Entity
 public class Category {
 
@@ -16,36 +21,9 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     Set<Recipe> recipes = new HashSet<>();
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public void setRecipes(Set<Recipe> recipes) {
-        this.recipes = recipes;
-    }
-
     @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", recipes=" + recipes +
-                '}';
+    public int hashCode() {
+        // Override Lombok generated hashCode
+        return super.hashCode();
     }
 }

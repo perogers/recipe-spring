@@ -4,13 +4,16 @@ import com.rioverde.recipe.domain.*;
 import com.rioverde.recipe.respositories.CategoryRepository;
 import com.rioverde.recipe.respositories.RecipeRepository;
 import com.rioverde.recipe.respositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class DevBootstrap  implements ApplicationListener<ContextRefreshedEvent>{
 
@@ -25,12 +28,14 @@ public class DevBootstrap  implements ApplicationListener<ContextRefreshedEvent>
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         initData();
     }
 
 
     private void initData() {
+        log.debug("Starting dev data load");
 
         // Get & verify units of measure
         Optional<UnitOfMeasure> eachUoM = unitOfMeasureRepository.findUnitOfMeasureByDescription("Each");
@@ -80,6 +85,7 @@ public class DevBootstrap  implements ApplicationListener<ContextRefreshedEvent>
             throw new RuntimeException("Fast Food category not present");
         }
 
+        log.debug("Creating dip recipe");
         // Dip recipe
         Recipe dip = new Recipe();
         dip.getCategories().add(mexicanCat.get());
@@ -115,6 +121,7 @@ public class DevBootstrap  implements ApplicationListener<ContextRefreshedEvent>
 
         recipeRepository.save(dip);
 
+        log.debug("Creating taco recipe");
         // Chicken taco recipe
         Recipe tacos = new Recipe();
         tacos.getCategories().add(mexicanCat.get());
