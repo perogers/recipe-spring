@@ -54,4 +54,10 @@ public class Recipe {
         return this;
     }
 
+    public Recipe addCategory(Category category) {
+        category.getRecipes().add(this);
+        this.categories.add(category);
+        return this;
+    }
+
 }

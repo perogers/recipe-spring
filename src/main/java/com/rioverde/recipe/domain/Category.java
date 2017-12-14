@@ -21,9 +21,4 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     Set<Recipe> recipes = new HashSet<>();
 
-    @Override
-    public int hashCode() {
-        // Override Lombok generated hashCode
-        return super.hashCode();
-    }
 }
