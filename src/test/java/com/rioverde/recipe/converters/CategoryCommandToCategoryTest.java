@@ -23,10 +23,10 @@ public class CategoryCommandToCategoryTest {
         assertNull(conveter.convert(null));
     }
 
-// @Test
-// public void testEmptyObject() throws Exception {
-//     assertNotNull(conveter.convert(new CategoryCommand()));
-// }
+    @Test
+    public void testEmptyObject() throws Exception {
+        assertNotNull(conveter.convert(new CategoryCommand()));
+    }
 
     @Test
     public void convert() throws Exception {
@@ -39,7 +39,7 @@ public class CategoryCommandToCategoryTest {
         Category category = conveter.convert(categoryCommand);
 
         //then
-        assertEquals(ID_VALUE.longValue(), category.getId());
+        assertEquals(ID_VALUE, category.getId());
         assertEquals(DESCRIPTION, category.getDescription());
     }
 

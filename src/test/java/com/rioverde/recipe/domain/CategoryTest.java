@@ -19,7 +19,7 @@ public class CategoryTest {
 
     @Test
     public void getId() {
-        long idValue = 2L;
+        Long idValue = new Long(2L);
         category.setId( idValue );
         assertEquals(idValue, category.getId());
     }
