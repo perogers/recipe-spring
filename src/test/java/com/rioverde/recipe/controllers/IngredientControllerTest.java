@@ -1,7 +1,9 @@
 package com.rioverde.recipe.controllers;
 
 
+import com.rioverde.recipe.commands.IngredientCommand;
 import com.rioverde.recipe.commands.RecipeCommand;
+import com.rioverde.recipe.services.IngredientService;
 import com.rioverde.recipe.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 public class IngredientControllerTest {
 
     @Mock
+    IngredientService ingredientService;
+
+    @Mock
     RecipeService recipeService;
 
     IngredientController controller;
@@ -33,7 +38,7 @@ public class IngredientControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new IngredientController(recipeService);
+        controller = new IngredientController(recipeService, ingredientService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
@@ -54,6 +59,21 @@ public class IngredientControllerTest {
 
     }
 
+
+    @Test
+    public void testShowIngredient() throws Exception {
+        // Given
+        IngredientCommand ingredientCommand = new IngredientCommand();
+
+        // When
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+
+        // Then
+        mockMvc.perform(get("/recipe/1/ingredient/2/show"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"));
+    }
 
 
 }
