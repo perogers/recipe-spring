@@ -4,4 +4,5 @@ import com.rioverde.recipe.commands.IngredientCommand;
 
 public interface IngredientService {
     IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
+    public IngredientCommand saveIngredientCommand(IngredientCommand command);
 }

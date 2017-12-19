@@ -3,6 +3,7 @@ package com.rioverde.recipe.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
