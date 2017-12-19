@@ -5,11 +5,13 @@ import com.rioverde.recipe.converters.IngredientCommandToIngredient;
 import com.rioverde.recipe.converters.IngredientToIngredientCommand;
 import com.rioverde.recipe.domain.Ingredient;
 import com.rioverde.recipe.domain.Recipe;
+import com.rioverde.recipe.respositories.IngredientRepository;
 import com.rioverde.recipe.respositories.RecipeRepository;
 import com.rioverde.recipe.respositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -21,16 +23,19 @@ public class IngredientServiceImpl implements IngredientService {
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final IngredientCommandToIngredient ingredientCommandToIngredient;
+    private final IngredientRepository ingredientRepository;
 
 
     public IngredientServiceImpl(IngredientToIngredientCommand ingredientToIngredientCommand,
                                  RecipeRepository recipeRepository,
                                  UnitOfMeasureRepository unitOfMeasureRepository,
-                                 IngredientCommandToIngredient ingredientCommandToIngredient) {
+                                 IngredientCommandToIngredient ingredientCommandToIngredient,
+                                 IngredientRepository ingredientRepository) {
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.ingredientCommandToIngredient = ingredientCommandToIngredient;
+        this.ingredientRepository = ingredientRepository;
     }
 
     @Override
@@ -93,6 +98,7 @@ public class IngredientServiceImpl implements IngredientService {
             Recipe savedRecipe = recipeRepository.save(recipe);
 
 
+
             Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
                     .findFirst();
@@ -111,5 +117,29 @@ public class IngredientServiceImpl implements IngredientService {
             return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }
 
+    }
+
+    @Override
+    public void deleteByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
+        log.debug("Entering deleteByRecipeIdAndIngredientId for Recipe ID: " + recipeId + ", Ingredient ID: " + ingredientId);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        if(!recipeOptional.isPresent()) {
+            log.error("Recipe not found for ID: " + recipeId);
+            return;
+        }
+        Recipe recipe = recipeOptional.get();
+        Optional<Ingredient> deleteIngredientOptional = recipe.getIngredients().stream()
+                .filter(ingredient -> ingredient.getId().equals(ingredientId))
+                .findFirst();
+
+        if(deleteIngredientOptional.isPresent()) {
+            Ingredient deleteIngredient = deleteIngredientOptional.get();
+            deleteIngredient.setRecipe(null);
+            recipe.getIngredients()
+                    .removeIf(ingredient -> ingredient.getId().equals(ingredientId));
+
+            recipeRepository.save(recipe);
+
+        }
     }
 }
