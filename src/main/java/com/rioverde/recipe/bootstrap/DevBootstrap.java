@@ -89,7 +89,7 @@ public class DevBootstrap  implements ApplicationListener<ContextRefreshedEvent>
         // Dip recipe
         Recipe dip = new Recipe();
         dip.getCategories().add(mexicanCat.get());
-        dip.setCookTime(0);
+        dip.setCookTime(1);
         dip.setPrepTime(10);
         dip.setDifficulty(Difficulty.EASY);
         dip.setServings(4);

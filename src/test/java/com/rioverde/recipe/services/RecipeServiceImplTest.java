@@ -3,6 +3,7 @@ package com.rioverde.recipe.services;
 import com.rioverde.recipe.converters.RecipeCommandToRecipe;
 import com.rioverde.recipe.converters.RecipeToRecipeCommand;
 import com.rioverde.recipe.domain.Recipe;
+import com.rioverde.recipe.exceptions.NotFoundException;
 import com.rioverde.recipe.respositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,4 +97,16 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, times(1)).deleteById(anyLong() );
 
     }
+
+
+    @Test(expected = NotFoundException.class)
+    public void testGetRecipeByIdNotFound() throws Exception {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
+
+    }
+
 }
