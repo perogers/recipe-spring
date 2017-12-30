@@ -3,6 +3,6 @@
 
 Recipe web application using Spring Web and JPA
 
-
+[![CircleCI](https://circleci.com/gh/perogers/recipe-spring.svg?style=svg)](https://circleci.com/gh/perogers/recipe-spring)
 
 
